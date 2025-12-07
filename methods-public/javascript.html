@@ -50,7 +50,7 @@
         try {
           const { data } = await axios.get('/api/people')
 
-          const people = data.data.map((person) => {
+          const people = data.people.map((person) => {
             return `<h5>${person.name}</h5>`
           })
           result.innerHTML = people.join('')
@@ -68,7 +68,16 @@
         const nameValue = input.value
 
         try {
-          const { data } = await axios.post('/api/people', { name: nameValue })
+          const axiosSavePeopleFullResp = await axios.post('/api/people', { name: nameValue })
+          // Axios is a library to create & manage http requests in javascript
+          // It returns a extensive wrapper object - that contains NOT just the data returned by server
+          // But a lot of meta data about the HTTP message => request/response 
+          // It contains things like multiple props like headers, status & it also contains many eventHandlers & other methods  
+          console.log(`axiosSavePeople Full Resp `, axiosSavePeopleFullResp)
+
+          // here we are just destructuring the "data" - property 
+          // which will always have only the info/data/response returned by the server
+          const { data } = axiosSavePeopleFullResp;
           const h5 = document.createElement('h5')
           h5.textContent = data.person
           result.appendChild(h5)
